@@ -1,7 +1,0 @@
-all: build
-
-build:
-	@docker build --tag=${USER}/factomd .
-
-release: build
-	@docker build --tag=${USER}/factomd:$(shell cat VERSION) .
