@@ -1,0 +1,24 @@
+factom_base:
+  build: Dockerfile_base
+golang:
+  build: Dockerfile_golang
+  links:
+      - factom_base
+btcd:
+  build: Dockerfile_btcd
+  links:
+      - factom_golang
+fctwallet:
+  build: Dockerfile_fctwallet
+  links:
+      - factom_golang
+factomd:
+  build: Dockerfile_factomd
+  links:
+      - factom_golang
+  volumes:
+      - ./factomd:/factomd/.factomd
+  ports:
+      - "127.0.0.1:8384:8384"
+      - "0.0.0.0:8108:8108"
+  command: ./factomd/factomd
