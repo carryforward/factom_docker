@@ -1,1 +1,36 @@
 # https://github.com/FactomProject/factomd.git
+
+FROM factom_golang
+
+ENV LC_ALL C.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+ENV USER factom
+ENV HOME /factomd
+ENV PATH $PATH:/usr/local/go/bin
+ENV GOPATH $HOME
+ENV GOROOT /usr/local/go
+
+RUN mkdir $HOME
+RUN useradd -m -d $HOME $USER
+
+RUN apt-get update \
+    && apt-get install -y -qq git mercurial \
+    && go get -v github.com/FactomProject/FactomCode/factomd
+
+ADD factomd.conf $HOME/.factom
+RUN rm -rf /var/lib/apt/lists/* # clean up repos
+RUN chown -R $USER:$USER $HOME
+
+#VOLUME ["${HOME}/.factom"]
+
+EXPOSE 8088
+EXPOSE 8089
+EXPOSE 8090
+
+USER $USER
+
+WORKDIR $HOME
+
+CMD $HOME/bin/factomd
