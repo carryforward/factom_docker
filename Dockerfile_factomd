@@ -23,7 +23,7 @@ ADD factomd.conf $HOME/.factom/factomd.conf
 RUN rm -rf /var/lib/apt/lists/* # clean up repos
 RUN chown -R $USER:$USER $HOME
 
-#VOLUME ["${HOME}/.factom"] # set via makefile/docker-compose
+VOLUME ["${HOME}/.factom"] # set via makefile/docker-compose
 
 # EXPOSE 8088 # api
 # EXPOSE 8089 # fctwallet?
