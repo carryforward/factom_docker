@@ -12,25 +12,31 @@ ENV PATH $PATH:/usr/local/go/bin
 ENV GOPATH $HOME
 ENV GOROOT /usr/local/go
 
-RUN mkdir $HOME
+RUN mkdir -p $HOME/.factom
 RUN useradd -m -d $HOME $USER
 
 RUN apt-get update \
     && apt-get install -y -qq git mercurial \
     && go get -v github.com/FactomProject/FactomCode/factomd
 
-ADD factomd.conf $HOME/.factom
+ADD factomd.conf $HOME/.factom/factomd.conf
 RUN rm -rf /var/lib/apt/lists/* # clean up repos
 RUN chown -R $USER:$USER $HOME
 
-#VOLUME ["${HOME}/.factom"]
+#VOLUME ["${HOME}/.factom"] # set via makefile/docker-compose
 
-EXPOSE 8088
-EXPOSE 8089
-EXPOSE 8090
+# EXPOSE 8088 # api
+# EXPOSE 8089 # fctwallet?
+# EXPOSE 8090 # control panel
+# EXPOSE 8108 # p2p network port (only outgoing)
+# EXPOSE 8384 # rpc
 
 USER $USER
 
-WORKDIR $HOME
+ENV GOPATH $HOME
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-CMD $HOME/bin/factomd
+WORKDIR $HOME/bin
+
+# CMD touch ~/alive.log && while :; do echo i_am_alive_`date` >> ~/alive.log; done
+CMD ./factomd

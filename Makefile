@@ -25,8 +25,8 @@ factom_factomd: factom_golang
 	# docker run -d -p 0.0.0.0:25:25 -p 0.0.0.0:587:587 -p 0.0.0.0:143:143 factom_btcd
 
 run-factomd:
-	docker run -d -p 127.0.0.1:8384:8384 -p 0.0.0.0:8108:8108 -v /factomd factom_factomd
-	# docker run -d -p 127.0.0.1:8384:8384 -p 0.0.0.0:8108:8108 factom_factomd
+	# docker run -d -p 127.0.0.1:8384:8384 -p 0.0.0.0:8108:8108 -v /factomd factom_factomd
+	docker run -d -p 127.0.0.1:8384:8384 -p 0.0.0.0:8108:8108 factom_factomd
 
 # run-fctwallet:
 	# docker run -d -p 0.0.0.0:80:80 -p 0.0.0.0:443:443 factom_fctwallet
