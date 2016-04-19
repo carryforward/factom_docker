@@ -19,7 +19,7 @@ factom_factomd: factom_golang
 
 run-factomd:
 	if [ -z "`docker ps -a | grep factom-data`" ]; then docker run --name factom-data -v /factom/.factom busybox true && docker cp factomd.conf factom-data:/factom/.factom && docker run --rm --volumes-from factom-data -v /factom/.factom -u root factom_factomd chown factom:factom /factom/.factom; else docker start factom-data; fi
-	docker run --rm --volumes-from factom-data -v /factom/.factom -p 127.0.0.1:8384:8384 -p 0.0.0.0:8108:8108 factom_factomd
+	docker run --rm --volumes-from factom-data --volume /factom/.factom --publish 0.0.0.0:8088 --publish 0.0.0.0:8108:8108 factom_factomd
 
 # run-fctwallet:
 	# docker run -d -p 0.0.0.0:80:80 -p 0.0.0.0:443:443 factom_fctwallet
