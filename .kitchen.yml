@@ -22,7 +22,7 @@ platforms:
       username: docker
       password: docker
       dockerfile: Dockerfile_factomd
-      run_command: /factomd/bin/factomd
+      run_command: /factom/bin/factomd
 
 suites:
   - name: default

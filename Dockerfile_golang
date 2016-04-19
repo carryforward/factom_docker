@@ -1,8 +1,6 @@
-# https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz
-# https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz
-
 FROM factom_base
-# FROM buildpack-deps:jessie-scm
+
+ENV HOME /factom
 
 # gcc for cgo
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -22,12 +20,10 @@ RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
     && tar -C /usr/local -xzf golang.tar.gz \
     && rm golang.tar.gz
 
-RUN mkdir -p /factomd
+RUN mkdir -p $HOME
 
-ENV GOPATH /factomd
+ENV GOPATH $HOME
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 755 "$GOPATH"
 WORKDIR $GOPATH
-
-# COPY go-wrapper /usr/local/bin/
