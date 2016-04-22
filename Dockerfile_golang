@@ -10,10 +10,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         make
     # && rm -rf /var/lib/apt/lists/*
 
-# ENV GOLANG_VERSION 1.5.3
-ENV GOLANG_VERSION 1.4.1
+# ENV GOLANG_VERSION 1.4.1
+ENV GOLANG_VERSION 1.5.3
+# ENV GOLANG_DOWNLOAD_SHA256 68170d5d48fc317155e69d2b55e4c09878433462ddb77d7900db6590ce2bef49
+ENV GOLANG_DOWNLOAD_SHA256 43afe0c5017e502630b1aea4d44b8a7f059bf60d7f29dfd58db454d4e4e0ae53
+
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 68170d5d48fc317155e69d2b55e4c09878433462ddb77d7900db6590ce2bef49
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
     && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -22,8 +24,14 @@ RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
 
 RUN mkdir -p $HOME
 
+ENV PATH $PATH:/usr/local/go/bin
+ENV GOPATH $HOME/go
+ENV PATH $PATH:$GOPATH/bin
+
 ENV GOPATH $HOME
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN go version
 
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 755 "$GOPATH"
 WORKDIR $GOPATH

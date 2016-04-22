@@ -23,6 +23,12 @@ platforms:
       password: docker
       dockerfile: Dockerfile_factomd
       run_command: /factom/bin/factomd
+  - name: Dockerfile_fctwallet
+    driver:
+      username: docker
+      password: docker
+      dockerfile: Dockerfile_fctwallet
+      run_command: fctwallet
 
 suites:
   - name: default

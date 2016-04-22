@@ -1,1 +1,39 @@
 # https://github.com/FactomProject/fctwallet.git
+
+FROM factom_golang
+
+ENV LC_ALL C.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+ENV USER factom
+ENV HOME /factom
+
+ENV PATH $PATH:/usr/local/go/bin
+ENV GOPATH $HOME/go
+ENV PATH $PATH:$GOPATH/bin
+
+RUN mkdir -p $HOME/.factom
+RUN useradd -m -d $HOME $USER
+
+RUN go version
+
+RUN apt-get install -y -qq git mercurial wget \
+    && go get -v github.com/FactomProject/fctwallet
+
+RUN rm -rf /var/lib/apt/lists/* # clean up repos
+RUN chown -R $USER:$USER $HOME
+
+ADD factomd.conf $HOME/.factom/factomd.conf
+
+# EXPOSE 8088 # api
+# EXPOSE 8089 # fctwallet?
+# EXPOSE 8090 # control panel
+# EXPOSE 8108 # p2p network port (only outgoing)
+# EXPOSE 8384 # rpc
+
+USER $USER
+
+WORKDIR $HOME
+
+CMD fctwallet
